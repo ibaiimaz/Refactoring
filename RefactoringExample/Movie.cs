@@ -11,59 +11,52 @@ namespace RefactoringExample
         public const int CHILDRENS = 2;
         public const int REGULAR = 0;
         public const int NEW_RELEASE = 1;
-        private String _title;
-        private int _priceCode;
+
+        private readonly String title;
+        private Price price;
 
         public Movie(String title, int priceCode)
         {
-            _title = title;
-            _priceCode = priceCode;
+            this.title = title;
+            SetPriceCode(priceCode);
         }
 
-        public int getPriceCode()
+        public int GetPriceCode()
         {
-            return _priceCode;
+            return price.GetPriceCode();
         }
 
-        public void setPriceCode(int arg)
+        public void SetPriceCode(int arg)
         {
-            _priceCode = arg;
+            switch (arg)
+            {
+                case REGULAR:
+                    price = new RegularPrice();
+                    break;
+                case CHILDRENS:
+                    price = new ChildrensPrice();
+                    break;
+                case NEW_RELEASE:
+                    price = new NewReleasePrice();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("arg", "Incorrect Price Code");
+            }
         }
 
-        public String getTitle()
+        public String GetTitle()
         {
-            return _title;
+            return title;
         }
 
         public double GetCharge(int daysRented)
         {
-            double result = 0;
-            switch (getPriceCode())
-            {
-                case Movie.REGULAR:
-                    result += 2;
-                    if (daysRented > 2)
-                        result += (daysRented - 2) * 1.5;
-                    break;
-                case Movie.NEW_RELEASE:
-                    result += daysRented * 3;
-                    break;
-                case Movie.CHILDRENS:
-                    result += 1.5;
-                    if (daysRented > 3)
-                        result += (daysRented - 3) * 1.5;
-                    break;
-            }
-            return result;
+            return price.GetCharge(daysRented);
         }
 
         public int GetFrecuentRenterPoints(int daysRented)
         {
-            // add bonus for a two day new release rental
-            if ((getPriceCode() == Movie.NEW_RELEASE) && daysRented > 1)
-                return 2;
-            else
-                return 1;
+            return price.GetFrecuentRenterPoints(daysRented);
         }
     }
 }

@@ -7,8 +7,8 @@ namespace RefactoringExample
 {
     public class Rental
     {
-        private Movie _movie;
-        private int _daysRented;
+        private readonly Movie _movie;
+        private readonly int _daysRented;
 
         public Rental(Movie movie, int daysRented)
         {
@@ -16,12 +16,12 @@ namespace RefactoringExample
             _daysRented = daysRented;
         }
 
-        public int getDaysRented()
+        public int GetDaysRented()
         {
             return _daysRented;
         }
 
-        public Movie getMovie()
+        public Movie GetMovie()
         {
             return _movie;
         }
